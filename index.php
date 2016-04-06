@@ -7,16 +7,16 @@ $username = test_input($_POST['username']);
 $password = md5($_POST['password']);
 
 
-include("connect.php");
+include("php/connect.php");
 
-$query =  "SELECT * FROM `Salespersons` WHERE `Username` = '$username' AND `Password` = '$password'";
+$query =  "SELECT * FROM `admin` WHERE `Username` = '$username' AND `Password` = '$password'";
 
 $result = mysqli_query($con, $query);
 if (mysqli_num_rows($result)==1) {
  //  echo "<br> username: " . $username . " is in the database";
 	session_start();
 	$_SESSION['username']= 'true';
-header('location:employee.php');
+header('location:php/employee.php');
 
 }else {
  $message = "<br><p>Incorrect Username or Password</p>";

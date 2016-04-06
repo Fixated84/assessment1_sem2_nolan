@@ -105,7 +105,9 @@ select{
 .account-action {
   background: #f0f0f2;
   border-top: 1px solid #c6c7cc;
-  padding: 20px;
+  padding: 15px;
+    
+    
  
 }
 .account-actionnew {
@@ -121,8 +123,9 @@ select{
   color: #fff;
   cursor: pointer;
    
-  
+    
   padding: 8px 16px;
+  
   
 }
 
@@ -134,6 +137,10 @@ select{
   font-weight: bold;
   
   padding: 8px 16px;
+    
+     display: block;
+    margin-left: auto;
+    margin-right: auto;
   
 }
 
