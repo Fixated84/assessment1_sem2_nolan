@@ -27,12 +27,16 @@ $term = $_REQUEST['term'];
 $sql = "SELECT * FROM Contacts WHERE lastname LIKE '%".$term."%'"; 
 $r_query = mysqli_query($con,$sql); 
 
-while ($row = mysqli_fetch_array($r_query)){  
+while ($row = mysqli_fetch_array($r_query)){ 
+ 
 echo 'Primary key: ' .$row['firstname'];  
 echo '<br /> Code: ' .$row['lastname'];  
 echo '<br /> Description: '.$row['phone'];  
 echo '<br /> Category: '.$row['email'];  
-echo '<br /> Cut Size: '.$row['facebook'];   
+echo '<br /> Cut Size: '.$row['facebook'];  
+echo '<br>'; 
+echo '<br>'; 
+ 
 }  
 
 }

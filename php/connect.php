@@ -5,7 +5,7 @@ $host = "localhost";
  $db_username = "root";
  $db_password = "";
  //$db_name = "m_list";
- $db_name = "wca";
+ $db_name = "ICTDBS504";
  // $db_name = "wca_db";
 // Create connection
  

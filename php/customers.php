@@ -10,7 +10,10 @@ if (!isset($_SESSION['username'])) {
    if($_POST) {
  $email = $_POST['email'];
  
-$queryremove = "DELETE FROM Customers WHERE (`email` = '$email')";	 
+  	
+
+ 
+$queryremove = "DELETE FROM Contacts WHERE (`email` = '$email')";	 
 
   
 $updatedb = mysqli_query($con,$queryremove);
@@ -30,11 +33,7 @@ $updatedb = mysqli_query($con,$queryremove);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="../images/icon.ico">
-
- 
- 
-
-    <title>West Coast Auto - Customer List</title>
+     <title>West Coast Auto - Customer List</title>
     <!-- Bootstrap -->
   <link href="../css/bootstrap.css" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
@@ -58,7 +57,7 @@ var btns = document.querySelectorAll('.case')   ,
     btn.addEventListener('click', function(event) {
         // fetching the phone number
     //    var selectedPhone = email.value;
-	       var selectedPhone = event.target.parentNode.previousSibling.textContent; 
+	       var selectedPhone = event.target.parentNode.previousSibling.previousSibling.textContent; 
 	 
     //var test = document.getElementById('firstname').value
 	
@@ -68,7 +67,7 @@ var btns = document.querySelectorAll('.case')   ,
 	  
 	 // update.value =  test;
 	  
-	//  alert(selectedPhone);
+	   alert(selectedPhone);
 	   
 	 	 
 		 
@@ -158,13 +157,13 @@ var btns = document.querySelectorAll('.case')   ,
         <div class="col-sm-7 col-sm-offset-1 col-lg-offset-1 col-lg-10">
          <hr>
      <h3 >ICTDBS504: Integrate database with website</h3>  <br>
-
+ 
 <form class="loginform"   method="post">
   <fieldset class="account-info" >
   
     <label>
       Last Name
-      <input  type="text"  name="fullname" placeholder="Last Name" value="<?php if (isset($_POST['lastname'])) echo htmlentities($_POST['lastname']); ?>"> 
+      <input  type="text"  name="lastname" placeholder="Last Name" value="<?php if (isset($_POST['lastname'])) echo htmlentities($_POST['lastname']); ?>"> 
     </label> 
  
  
@@ -199,6 +198,11 @@ var btns = document.querySelectorAll('.case')   ,
 
  
 <?php
+
+ if (isset($_SESSION['searchterm'])) {
+	 
+$term =  $_SESSION['searchterm'];
+ 
  
 //if (!isset($_SESSION['activeusername'])) {
   
@@ -214,23 +218,22 @@ var btns = document.querySelectorAll('.case')   ,
 
  include("connect.php");
 
-$query = "SELECT * FROM Contacts WHERE (`lastname` = '$email')";
-$result = mysqli_query($con,$query);
+if (!empty($_REQUEST['lastname'])) {
+
+$term = $_REQUEST['lastname'];     
+
+$sql = "SELECT * FROM Contacts WHERE lastname LIKE '%".$term."%'"; 
 
  
- while ($row = mysqli_fetch_array($result))   :
+ $_SESSION['searchterm']= $term;
+ 
+ 
+ 
+	
+$r_query = mysqli_query($con,$sql); 
 
-$firstname = $row['firstname'];
-$lastname = $row['lastname'];
-$phone = $row['phone'];
-$email = $row['email'];
-$facebook = $row['facebook'];
+while ($row = mysqli_fetch_array($r_query)){ 
  
-  
- 
-// echo "<td>".$row['email']."</td>";
-//echo "<td>".$row['phone']."</td>";
-//echo "<td>".$row['username']."</td>";
 
 echo "<tr id=\"tr1\">";
 echo "<td>".$row['firstname']."</td>";
@@ -242,7 +245,9 @@ echo "<td>".$row['lastname']."</td>";
  // echo "<td>".$row['password']."</td>";
   echo "<td> <input type=\"checkbox\" class=\"case\" name=\"case[]\" value=\"\1\" onclick=\"myfunc(this);\" onChange=\"cbChange(this)\"></td>";
   echo "<td> <input type=\"checkbox\" class=\"updateinfo\" name=\"updateinfo[]\" value=\"\1\" onclick=\"myfunc(this);\" onChange=\"cbChange(this)\"></td>";
-endwhile;
+}  
+
+} }
     
 	/* <?php $testr = $_POST['testcode']?> */
 	 
@@ -268,12 +273,14 @@ endwhile;
 	
 	
    
-   if (isset($_POST['updatefullname'])) {
+   if (isset($_POST['updatefirstname'])) {
 	   //   echo("You clicked button one!");
-   $fullname  = $_POST['updatefullname'];
-  $address = $_POST['updateaddress'];
+   $firstname  = $_POST['updatefirstname'];
+    $lastname  = $_POST['updatelastname']; 
+  
   $phonenum = $_POST['updatephone']; 
       $emailadd = $_POST['updateemail'];
+	 $facebookadd = $_POST['updatefacebook'];  
   //   $usrname = $_POST['updateusername']; 
     $help = $_POST['updatehelp']; 
    
@@ -282,7 +289,7 @@ endwhile;
  // PRROBLEM MAYBE QUERY LISTING ALL ENTRYS
  
  
- $queryupdate = "UPDATE `Customers` SET `Fullname` = '".$fullname."', `Address` = '".$address."', `Phone` = '".$phonenum."', `Email` = '".$emailadd."'  WHERE `Email` = '".$help."'";	 
+ $queryupdate = "UPDATE `Contacts` SET `firstname` = '".$firstname."', `lastname` = '".$lastname."', `phone` = '".$phonenum."', `email` = '".$emailadd."', `facebook` = '".$facebookadd."'  WHERE `email` = '".$help."'";	 
 
   
 $updatedb = mysqli_query($con,$queryupdate);
@@ -311,21 +318,24 @@ $updatedb = mysqli_query($con,$queryupdate);
 
  
  
-<div class="col-sm-3 col-md-9 col-md-offset-2 col-lg-offset-4 col-lg-5">
+<div class="col-sm-3 col-md-9 col-md-offset-2 col-lg-offset-3 col-lg-6">
 
  
 
 <form  class="hideupdate"   method="post">
   <fieldset class="account-info" >
-Full Name: <input type="text" name="updatefullname" class="updatefullname">
+Firstname: <input type="text" name="updatefirstname" class="updatefirstname">
 <br>
-Address: <input type="text" name="updateaddress" class="updateaddress"> 
+Lastname: <input type="text" name="updatelastname" class="updatelastname">
 <br>
+ 
 
 Phone: <input type="text" name="updatephone" class="updatephone">
 <br>
 Email: <input type="text" name="updateemail" class="updateemail">
+
 <br>
+Facebook: <input type="text" name="updatefacebook" class="updatefacebook">
 <!--Property: <input type="text" name="updateproperty" class="updateproperty">-->
  
 
@@ -407,23 +417,27 @@ Email: <input type="text" name="updateemail" class="updateemail">
 	 //  }
  
 	   
-	  fullname = document.querySelector('.updatefullname'),
-	  address = document.querySelector('.updateaddress') ,
+	  firstname = document.querySelector('.updatefirstname'),
+	  lastname =  document.querySelector('.updatelastname'),
+	 
 	  phonenumber = document.querySelector('.updatephone') ,
       email = document.querySelector('.updateemail') ,
+	  facebook= document.querySelector('.updatefacebook') ,
 	  username = document.querySelector('.updateusername') ;
 	  
 	  updatehelp = document.querySelector('.updatehelp') ;  
 	//  passwd = document.querySelector('.updatepassword') ; 
 		 // phone = document.querySelector('$testr') 
 		       
-			    var select1 = event.target.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.textContent; 
+			    var select1 = event.target.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.textContent; 
 		
-				var select2 = event.target.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent; 
+				var select2 = event.target.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.textContent; 
 				
-		      var select3 = event.target.parentNode.previousSibling.previousSibling.textContent; 
+		      var select3 = event.target.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent; 
 			  
 			    var select4 = event.target.parentNode.previousSibling.previousSibling.previousSibling.textContent; 
+				
+				   var select5 = event.target.parentNode.previousSibling.previousSibling.textContent; 
 			   
 			//  var select5 = event.target.parentNode.previousSibling.previousSibling.previousSibling.textContent; 
 
@@ -434,13 +448,14 @@ Email: <input type="text" name="updateemail" class="updateemail">
 				 
 				//   var select7 = event.target.parentNode.previousSibling.previousSibling.textContent; 
 			  
-		fullname.value =  select1 ;
-	 	address.value =  select2 ;
-	 	email.value =  select3 ;
- 	   phonenumber.value = select4;
+		firstname.value =  select1 ;
+		 lastname.value =  select2 ;
+	     phonenumber.value = select3;
+	  	email.value =  select4 ;
+ 	facebook.value =  select5 ;
 	 	 
 		 
-     	 updatehelp.value = select3;
+     	  updatehelp.value = select4;
 		//  alert(select1);
 			  
     

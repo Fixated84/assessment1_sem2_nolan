@@ -50,9 +50,9 @@ function test_input($data) {
 
     <title>ICTDBS504: Integrate database with website</title>
     
- 
+ <link href="css/bootstrap.css" rel="stylesheet">	
   <link href="css/style.css" rel="stylesheet">
-  <link href="css/bootstrap.css" rel="stylesheet">	
+  
   </head>
   <body>
   <br><br>
