@@ -77,11 +77,11 @@ function test_input($data) {
       <div class="collapse navbar-collapse" id="inverseNavbar1">
         <ul class="nav navbar-nav">
        <!--   <li class="active"><a href="#">Link<span class="sr-only">(current)</span></a></li>-->
-           <li ><a href="../index.html">Home</a></li>
-           <li class="active"><a href="employee.php">Employee Login</a></li>
+           <li ><a href="index.php">Home</a></li>
+           
           <!-- <li><a href="pages/design.html">Design</a></li>-->
   
-           <li><a href="../pages/ourprocess.html">Privacy Policy</a></li>
+   
                              
         </ul>
      

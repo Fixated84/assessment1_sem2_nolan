@@ -6,22 +6,22 @@ if (!isset($_SESSION['username'])) {
 }
  
 $message = "<br><p></p><br>";
- $fullnameErr = $addressErr = $emailErr = $phoneErr = $error = $error1 = "<br><p></p><br>";
+ $firstNameErr = $lastNameErr = $phoneErr = $emailErr = $faceBookErr = $error = $error1 = "<br><p></p><br>";
  
  
  if ($_SERVER["REQUEST_METHOD"] == "POST") {
  	 
-if (empty($_POST["fullname"])) {
-	$fullname = "";
-$fullnameErr = "<p class=\"animated bounce red\">First Name is Required.</p>";
+if (empty($_POST["firstname"])) {
+	$firstname = "";
+$firstNameErr = "<p class=\"animated bounce red\">First Name is Required.</p>";
  
 $error = true;
  
 }else{ 
 
-$fullname = test_input($_POST["fullname"]);
-if (!preg_match("/^[a-zA-Z ]*$/",$fullname)) {
-      $fullnameErr = "<p class=\"animated bounce red\">Full name requires letters only</p>"; 
+$firstname = test_input($_POST["firstname"]);
+if (!preg_match("/^[a-zA-Z ]*$/",$firstname)) {
+      $firstNameErr = "<p class=\"animated bounce red\">Full name requires letters only</p>"; 
       $error = true;
 	  
 	 
@@ -30,17 +30,18 @@ if (!preg_match("/^[a-zA-Z ]*$/",$fullname)) {
 $error = false;	
 }
 }
-if (empty($_POST["address"])) {
-	$address = "";
-$addressErr = "<p class=\"animated bounce red\">Address is Required</p>";
+
+if (empty($_POST["lastname"])) {
+	$lastname = "";
+$lastNameErr = "<p class=\"animated bounce red\">Last name is Required</p>";
 $error = true;
  
 } else {
 
 
-$address = test_input($_POST["address"]);	
-if (!preg_match("/^[a-zA-Z0-9 ]*$/",$address)) {
-      $addressErr = "<p class=\"animated bounce red\">Address requires letters and numbers only</p>"; 
+$lastname = test_input($_POST["lastname"]);	
+if (!preg_match("/^[a-zA-Z0-9 ]*$/",$lastname)) {
+      $lastNameErr = "<p class=\"animated bounce red\">Last name requires letters only</p>"; 
       $error = true;
 	 
 }else {
@@ -86,6 +87,24 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 $error = false;	
 }
 } 
+if (empty($_POST["facebook"])) {
+	$facebook = "";
+$faceBookErr = "<p class=\"animated bounce red\">Facebook is Required</p>";
+$error = true;
+ 
+} else {
+
+
+$facebook = test_input($_POST["facebook"]);	
+if (!preg_match("/^[a-zA-Z0-9 ]*$/",$facebook)) {
+      $faceBookErr = "<p class=\"animated bounce red\">Facebook requires numbers and letters only</p>"; 
+      $error = true;
+	 
+}else {
+	
+$error = false;	
+}
+} 
 
  } 
   if (!$error) {
@@ -93,8 +112,8 @@ $error = false;
 
  include("connect.php");
  
-$queryadd = "INSERT INTO Customers (`idCustomers`, `Fullname` ,`Address`,`Phone`,`Email`)
-VALUES (NULL, '$fullname', '$address','$phone','$email')";
+$queryadd = "INSERT INTO Contacts (`firstname` ,`lastname`,`phone`,`email`,`facebook`)
+VALUES ('$firstname', '$lastname','$phone','$email','$facebook')";
 
 $updatedb = mysqli_query($con,$queryadd);
 
@@ -102,11 +121,11 @@ $updatedb = mysqli_query($con,$queryadd);
 
  if ($updatedb) {
 	 $message = "";
- $message = "<br><p class=\"animated bounce green\">You have been successfully added to the mailing list.</p>" ;
+ $message = "<br><p class=\"animated bounce green\">You have been successfully added to the contact list.</p>" ;
 
  }else{
 	 $message = "";
-   $message = "<br><p class=\"animated bounce red\"> Your information could not be added to the mailing list.</p>";
+   $message = "<br><p class=\"animated bounce red\"> Your information could not be added to the contact list.</p>";
 
 } 
  
@@ -129,39 +148,10 @@ $updatedb = mysqli_query($con,$queryadd);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="../images/icon.ico">
+ 
+	 
 
-<!--<script type="text/javascript">
-jQuery(document).ready(function($){
- 
-if (sessionStorage.getItem('RockrollOnce') !== 'true') {
-<!--$('body').append('<body>')
-    $("body").removeAttr("onLoad");
-sessionStorage.setItem('RockrollOnce','true');
-}
- 
- 
- 
-});
-</script>-->
-	<script src="../js/jquery-1.11.2.min.js"></script>
-<script type="text/javascript">//<![CDATA[
-$(document).ready(function() {
-var now = (new Date()).getTime();
-var lastTime = 0;
-var lastTimeStr = localStorage['lastTime2'];
-if (lastTimeStr) lastTime = parseInt(lastTimeStr, 30);
-if (now - lastTime > 1*60*1000) {
-// alert("I am an alert box!");
-  //  $("body").removeAttr("onLoad");
-  //$("body").
-   $("body").attr("onLoad","$('#myModal').modal('show');");
-} 
-localStorage['lastTime2'] = ""+now;
-});//]]> 
-
-</script>
-
-    <title>West Coast Auto - Add Customer</title>
+    <title>Add New Contact</title>
     <!-- Bootstrap -->
   <link href="../css/bootstrap.css" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
@@ -173,7 +163,7 @@ localStorage['lastTime2'] = ""+now;
 		<![endif]-->
   </head>
   <body onLoad="" >
-  
+  <br><br>
    <!--Testing Fix Nav with navbar-fixed-top-->
   <nav class="navbar navbar-inverse navbar-fixed-top">
      <!--Testing Fix Nav with navbar-fixed-top-->
@@ -196,11 +186,8 @@ localStorage['lastTime2'] = ""+now;
       <div class="collapse navbar-collapse" id="inverseNavbar1">
         <ul class="nav navbar-nav">
        <!--   <li class="active"><a href="#">Link<span class="sr-only">(current)</span></a></li>-->
-           <li ><a href="../index.html">Home</a></li>
-           <li class="active"><a href="employee.php">Employee Login</a></li>
-          <!-- <li><a href="pages/design.html">Design</a></li>-->
-  
-           <li><a href="#">Privacy Policy</a></li>
+           <li ><a href="../index.php">Home</a></li>
+     
                              
         </ul>
      
@@ -239,94 +226,24 @@ localStorage['lastTime2'] = ""+now;
 </div>
 
   <div class="container">
-    <div class="row">
-     
-   <div class="col-md-12 col-sm-8 col-sm-offset-0">
- 
- <!--Testing Fix Nav with 3 br-->
-  <br>
   
-<br>
-<br>
- <!--Testing Fix Nav with 3 br-->
- 
-  <img src="../images/logo.png" class="img-responsive center-block" alt="Placeholder image"> <br>
-   <!--<hr>-->
-  <!--End Col-->
-  
-  </div>
-  
-    <div class="col-md-12 col-sm-8 col-sm-offset-0 col-lg-offset-1 col-lg-10">
- 
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-  
-            
-            </div>
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="defaultNavbar1">
-            <ul class="nav navbar-nav hello">
-            
-              <li ><a href="../index.html">Home<span class="sr-only">(current)</span></a></li>
- 
- 
-  
- 
- 
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About<span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">History</a></li>
-                  <li><a href="#">Our Values</a></li>
-                  
-                </ul>
-              </li>
-       <li ><a href="#">Specials</a></li> 
-       <li ><a href="#">Used Vehicles</a></li>             
-               <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Finance<span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Insurance</a></li>
-                  
-                </ul>
-              </li>            
-     <li ><a href="#">Testimonals</a></li>         
-        <li ><a href="#">Contact</a></li>         
-             
-            </ul>
-    
- 
-          </div>
-          <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-      </nav>
-
-      <!--Testing Fix Nav with 3 br-->
- 
-   <!--<hr>-->
-  <!--End Col-->
-  
-  </div>
-    </div>
     <div class="row">
         
         <div class="col-sm-7 col-sm-offset-1 col-lg-offset-1 col-lg-10">
          <hr>
-       <h3 >West Coast Auto - Add Customer</h3>  <br>
+       <h3 >Add Contact</h3>  <br>
 
     <form class="loginform"   method="post">
   <fieldset class="account-info" >
   
     <label>
-      Full Name
-      <input  type="text"  name="fullname" placeholder="Full Name" value="<?php if (isset($_POST['fullname'])) echo htmlentities($_POST['fullname']); ?>"> 
+      First Name
+      <input  type="text"  name="firstname" placeholder="First Name" value="<?php if (isset($_POST['firstname'])) echo htmlentities($_POST['firstname']); ?>"> 
     </label> 
  
 <label>
-   Address:
-<input type="text" name="address" id="address" placeholder="Address" value="<?php if (isset($_POST['address'])) echo htmlentities($_POST['address']); ?>" />
+   Last Name:
+<input type="text" name="lastname" id="lastname" placeholder="last Name" value="<?php if (isset($_POST['lastname'])) echo htmlentities($_POST['lastname']); ?>" />
  </label>
  
 <label>
@@ -339,6 +256,10 @@ localStorage['lastTime2'] = ""+now;
 <input type="text" name="email" id="email" placeholder="Email Address" value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>" />
  </label>
 
+<label>
+ Facebook: 
+<input type="text" name="facebook" id="facebook" placeholder="Facebook" value="<?php if (isset($_POST['facebook'])) echo htmlentities($_POST['facebook']); ?>" />
+ </label>
  </fieldset>
   
     <fieldset class="account-action" >
@@ -367,7 +288,7 @@ localStorage['lastTime2'] = ""+now;
  // shows errors
   
 	 echo $message;
- echo $fullnameErr .  $addressErr . $emailErr . $phoneErr;
+ echo $firstNameErr .  $lastNameErr . $phoneErr . $emailErr . $faceBookErr;
  
 ?>
     
@@ -384,7 +305,7 @@ localStorage['lastTime2'] = ""+now;
         <div class="row center-block">
     <div class="text-center col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-0 hello">
       
-      <p>Copyright &copy; 2015 &middot; All Rights Reserved &middot; <a href="../index.html" >Home</a> | <a href="#" >Privacy Policy</a>  </p>
+      <p>Copyright &copy; 2015 &middot; All Rights Reserved </p>
     </div>
       
   </div>

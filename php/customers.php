@@ -2,7 +2,7 @@
  
   session_start();
 if (!isset($_SESSION['username'])) {
- header('location:login.php');
+ header('location:../index.php');
 }
   include("connect.php");
 
@@ -67,8 +67,8 @@ var btns = document.querySelectorAll('.case')   ,
 	  
 	 // update.value =  test;
 	  
-	   alert(selectedPhone);
-	   
+	 //  alert(selectedPhone);
+	 
 	 	 
 		 
     }, false);
@@ -109,10 +109,9 @@ var btns = document.querySelectorAll('.case')   ,
         <ul class="nav navbar-nav">
        <!--   <li class="active"><a href="#">Link<span class="sr-only">(current)</span></a></li>-->
            <li ><a href="../index.php">Home</a></li>
-           <li class="active"><a href="employee.php">Employee Login</a></li>
-          <!-- <li><a href="pages/design.html">Design</a></li>-->
+         
   
-           <li><a href="#">Privacy Policy</a></li>
+     
                              
         </ul>
      
@@ -183,9 +182,9 @@ var btns = document.querySelectorAll('.case')   ,
 <br><br>
 <table  class="gridtable">
   <tr>
-<th>Firstname</th>
+<th>First Name</th>
 
-<th>Lastname</th>
+<th>Last Name</th>
 <th>Phone</th>
 <th>Email</th>
 <th>Facebook</th>
@@ -199,9 +198,9 @@ var btns = document.querySelectorAll('.case')   ,
  
 <?php
 
- if (isset($_SESSION['searchterm'])) {
+ //if (isset($_SESSION['searchterm'])) {
 	 
-$term =  $_SESSION['searchterm'];
+//$term =  $_SESSION['searchterm'];
  
  
 //if (!isset($_SESSION['activeusername'])) {
@@ -247,7 +246,8 @@ echo "<td>".$row['lastname']."</td>";
   echo "<td> <input type=\"checkbox\" class=\"updateinfo\" name=\"updateinfo[]\" value=\"\1\" onclick=\"myfunc(this);\" onChange=\"cbChange(this)\"></td>";
 }  
 
-} }
+} 
+//}
     
 	/* <?php $testr = $_POST['testcode']?> */
 	 
@@ -275,8 +275,8 @@ echo "<td>".$row['lastname']."</td>";
    
    if (isset($_POST['updatefirstname'])) {
 	   //   echo("You clicked button one!");
-   $firstname  = $_POST['updatefirstname'];
-    $lastname  = $_POST['updatelastname']; 
+   $firstnameadd  = $_POST['updatefirstname'];
+    $lastnameadd  = $_POST['updatelastname']; 
   
   $phonenum = $_POST['updatephone']; 
       $emailadd = $_POST['updateemail'];
@@ -289,7 +289,7 @@ echo "<td>".$row['lastname']."</td>";
  // PRROBLEM MAYBE QUERY LISTING ALL ENTRYS
  
  
- $queryupdate = "UPDATE `Contacts` SET `firstname` = '".$firstname."', `lastname` = '".$lastname."', `phone` = '".$phonenum."', `email` = '".$emailadd."', `facebook` = '".$facebookadd."'  WHERE `email` = '".$help."'";	 
+ $queryupdate = "UPDATE `Contacts` SET `firstname` = '".$firstnameadd."', `lastname` = '".$lastnameadd."', `phone` = '".$phonenum."', `email` = '".$emailadd."', `facebook` = '".$facebookadd."'  WHERE `email` = '".$help."'";	 
 
   
 $updatedb = mysqli_query($con,$queryupdate);
@@ -376,7 +376,7 @@ Facebook: <input type="text" name="updatefacebook" class="updatefacebook">
         <div class="row center-block">
     <div class="text-center col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-0 hello">
       
-      <p>Copyright &copy; 2015 &middot; All Rights Reserved &middot; <a href="../index.html" >Home</a> | <a href="#" >Privacy Policy</a>  </p>
+      <p>Copyright &copy; 2015 &middot; All Rights Reserved </p>
     </div>
       
   </div>
