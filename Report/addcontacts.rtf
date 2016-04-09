@@ -1,0 +1,148 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf460
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <?php\
+ \
+ session_start();\
+if (!isset($_SESSION['username'])) \{\
+ header('location:login.php');\
+\}\
+ \
+$message = "<br><p></p><br>";\
+ $firstNameErr = $lastNameErr = $phoneErr = $emailErr = $faceBookErr = $error = $error1 = "<br><p></p><br>";\
+ \
+ \
+ if ($_SERVER["REQUEST_METHOD"] == "POST") \{\
+ 	 \
+if (empty($_POST["firstname"])) \{\
+	$firstname = "";\
+$firstNameErr = "<p class=\\"animated bounce red\\">First Name is Required.</p>";\
+ \
+$error = true;\
+ \
+\}else\{ \
+\
+$firstname = test_input($_POST["firstname"]);\
+if (!preg_match("/^[a-zA-Z ]*$/",$firstname)) \{\
+      $firstNameErr = "<p class=\\"animated bounce red\\">Full name requires letters only</p>"; \
+      $error = true;\
+	  \
+	 \
+\} else \{\
+	\
+$error = false;	\
+\}\
+\}\
+\
+if (empty($_POST["lastname"])) \{\
+	$lastname = "";\
+$lastNameErr = "<p class=\\"animated bounce red\\">Last name is Required</p>";\
+$error = true;\
+ \
+\} else \{\
+\
+\
+$lastname = test_input($_POST["lastname"]);	\
+if (!preg_match("/^[a-zA-Z0-9 ]*$/",$lastname)) \{\
+      $lastNameErr = "<p class=\\"animated bounce red\\">Last name requires letters only</p>"; \
+      $error = true;\
+	 \
+\}else \{\
+	\
+$error = false;	\
+\}\
+\} \
+if (empty($_POST["phone"])) \{\
+	$phone = "";\
+$phoneErr = "<p class=\\"animated bounce red\\">Phone number is Required.</p>";\
+ \
+$error = true;\
+ \
+\}else\{ \
+\
+$phone = test_input($_POST["phone"]);\
+if (!preg_match("/^[0-9 ]*$/",$phone)) \{\
+      $phoneErr = "<p class=\\"animated bounce red\\">Phone number requires numbers only</p>"; \
+      $error = true;\
+	  \
+	 \
+\} else \{\
+	\
+$error = false;	\
+\}\
+\}\
+ if (empty($_POST["email"])) \{\
+	$email = "";\
+$emailErr = "<p class=\\"animated bounce red\\">Email is Required</p>";\
+$error = true;\
+\
+ \
+\} else \{\
+\
+\
+$email = test_input($_POST["email"]);	\
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) \{\
+      $emailErr = "<p class=\\"animated bounce red\\">Invalid email format</p>"; \
+      $error = true;\
+ \
+\}else \{\
+	\
+$error = false;	\
+\}\
+\} \
+if (empty($_POST["facebook"])) \{\
+	$facebook = "";\
+$faceBookErr = "<p class=\\"animated bounce red\\">Facebook is Required</p>";\
+$error = true;\
+ \
+\} else \{\
+\
+\
+$facebook = test_input($_POST["facebook"]);	\
+if (!preg_match("/^[a-zA-Z0-9 ]*$/",$facebook)) \{\
+      $faceBookErr = "<p class=\\"animated bounce red\\">Facebook requires numbers and letters only</p>"; \
+      $error = true;\
+	 \
+\}else \{\
+	\
+$error = false;	\
+\}\
+\} \
+\
+ \} \
+  if (!$error) \{\
+ \
+\
+ include("connect.php");\
+ \
+$queryadd = "INSERT INTO Contacts (`firstname` ,`lastname`,`phone`,`email`,`facebook`)\
+VALUES ('$firstname', '$lastname','$phone','$email','$facebook')";\
+\
+$updatedb = mysqli_query($con,$queryadd);\
+\
+  mysqli_close($con);\
+\
+ if ($updatedb) \{\
+	 $message = "";\
+ $message = "<br><p class=\\"animated bounce green\\">You have been successfully added to the contact list.</p>" ;\
+\
+ \}else\{\
+	 $message = "";\
+   $message = "<br><p class=\\"animated bounce red\\"> Your information could not be added to the contact list.</p>";\
+\
+\} \
+ \
+\
+ \}  \
+ function test_input($data) \{\
+  $data = trim($data);\
+  $data = stripslashes($data);\
+  $data = htmlspecialchars($data);\
+  return $data;\
+ \
+ \}  \
+\
+?>}

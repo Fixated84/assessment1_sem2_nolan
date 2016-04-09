@@ -10,9 +10,7 @@ if (!isset($_SESSION['username'])) {
    if($_POST) {
  $email = $_POST['email'];
  
-  	
-
- 
+  
 $queryremove = "DELETE FROM Contacts WHERE (`email` = '$email')";	 
 
   
