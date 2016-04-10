@@ -9,12 +9,10 @@ if (!isset($_SESSION['username'])) {
  
    if($_POST) {
  $email = $_POST['email'];
- 
-  
+   
 $queryremove = "DELETE FROM Contacts WHERE (`email` = '$email')";	 
 
-  
-$updatedb = mysqli_query($con,$queryremove);
+  $updatedb = mysqli_query($con,$queryremove);
 
  mysqli_close($con);
  
@@ -31,7 +29,7 @@ $updatedb = mysqli_query($con,$queryremove);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="../images/icon.ico">
-     <title>West Coast Auto - Customer List</title>
+     <title>Contact List</title>
     <!-- Bootstrap -->
   <link href="../css/bootstrap.css" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
@@ -126,22 +124,8 @@ var btns = document.querySelectorAll('.case')   ,
 <ul class="nav navbar-nav">
  <br><br>
 
-           <li class="active" ><a href="../index.html">Home</a></li>
-           <li><a href="../pages/about.html">About</a></li>
-             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Design<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="../pages/design.html">Display Homes</a></li>
-            <li class="divider"></li>
-            <li><a href="../pages/appliances.html">Appliances</a></li>                       
-            <li><a href="../pages/indoor.html">Indoors</a></li>
-            <li><a href="../pages/outdoor.html">Outdoors</a></li>
-          </ul>
-        </li>
-          <li><a href="../pages/ourprocess.html">Our Process</a></li>
-           <li><a href="../pages/faq.html">FAQ</a></li>  
-           <li><a href="../pages/testimonials.html">Testimonials</a></li>  
-                <li><a href="clients.php">Clients</a></li>  
-           <li><a href="../pages/contact.html">Contact</a></li>   
+           <li class="active" ><a href="../index.php">Home</a></li>
+           
               </ul>  
 </nav>
 
@@ -236,8 +220,12 @@ echo "<tr id=\"tr1\">";
 echo "<td>".$row['firstname']."</td>";
 echo "<td>".$row['lastname']."</td>";
  echo "<td>".$row['phone']."</td>";
- echo "<td>".$row['email']."</td>";
-  echo "<td>".$row['facebook']."</td>";
+ echo "<td><a href=mailto:".$row['email'].">".$row['email']."</td>";
+ 
+  
+  echo "<td><a href=http://'".$row['facebook']."' target=_blank'>".$row['facebook']."</a></td>";
+ 
+ 
  
  // echo "<td>".$row['password']."</td>";
   echo "<td> <input type=\"checkbox\" class=\"case\" name=\"case[]\" value=\"\1\" onclick=\"myfunc(this);\" onChange=\"cbChange(this)\"></td>";
@@ -355,14 +343,14 @@ Facebook: <input type="text" name="updatefacebook" class="updatefacebook">
 <FORM name="something" method="post">
   
   <div class="col-sm-3 col-md-9 col-md-offset-2 col-lg-6 col-lg-offset-4">
-  <button type="button" class="btn btn-sm btn-default ce" onClick="window.location.href='addcustomers.php'" value="Log Out">Add</button> 
+  <button type="button" class="btn btn-sm btn-default ce" onClick="window.location.href='addcontacts.php'" value="Add Contacts">Add</button> 
     
          <INPUT type="hidden"  id="hello1" name="email"  class="emailaddr" >
        <!--  <button type="submit"  name="url" class="btn btn-sm btn-default emailaddr" >Remove</button>-->
         <INPUT type="submit" value="Remove" class="btn btn-sm btn-default">
- <button type="button"  name="goback" onClick="window.location.href='employee.php'" class="btn btn-sm btn-default" >Go Back</button>
+ <button type="button"  name="goback" onClick="window.location.href='portal.php'" class="btn btn-sm btn-default" >Go Back</button>
          
-         <button type="button" class="btn btn-sm btn-default" onClick="window.location.href='employee.php?logout=1'" value="Log Out">Logout</button>      
+         <button type="button" class="btn btn-sm btn-default" onClick="window.location.href='portal.php?logout=1'" value="Log Out">Logout</button>      
    </div>     
  </FORM>    
      

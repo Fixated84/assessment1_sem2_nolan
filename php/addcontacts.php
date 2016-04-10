@@ -1,19 +1,145 @@
 <?php
+ 
  session_start();
 if (!isset($_SESSION['username'])) {
- header('location:./index.php');
+ header('location:login.php');
+}
+ 
+$message = "<br><p></p><br>";
+ $firstNameErr = $lastNameErr = $phoneErr = $emailErr = $faceBookErr = $error = $error1 = "<br><p></p><br>";
+ 
+ 
+ if ($_SERVER["REQUEST_METHOD"] == "POST") {
+ 	 
+if (empty($_POST["firstname"])) {
+	$firstname = "";
+$firstNameErr = "<p class=\"animated bounce red\">First Name is Required.</p>";
+ 
+$error = true;
+ 
+}else{ 
+
+$firstname = test_input($_POST["firstname"]);
+if (!preg_match("/^[a-zA-Z ]*$/",$firstname)) {
+      $firstNameErr = "<p class=\"animated bounce red\">Full name requires letters only</p>"; 
+      $error = true;
+	  
+	 
+} else {
+	
+$error = false;	
+}
 }
 
- if(isset($_GET['logout'])) {
- session_unset(); 
+if (empty($_POST["lastname"])) {
+	$lastname = "";
+$lastNameErr = "<p class=\"animated bounce red\">Last name is Required</p>";
+$error = true;
+ 
+} else {
 
-// destroy the session 
-session_destroy(); 
-header('Location:../index.php');
+
+$lastname = test_input($_POST["lastname"]);	
+if (!preg_match("/^[a-zA-Z0-9 ]*$/",$lastname)) {
+      $lastNameErr = "<p class=\"animated bounce red\">Last name requires letters only</p>"; 
+      $error = true;
+	 
+}else {
+	
+$error = false;	
 }
+} 
+if (empty($_POST["phone"])) {
+	$phone = "";
+$phoneErr = "<p class=\"animated bounce red\">Phone number is Required.</p>";
+ 
+$error = true;
+ 
+}else{ 
+
+$phone = test_input($_POST["phone"]);
+if (!preg_match("/^[0-9 ]*$/",$phone)) {
+      $phoneErr = "<p class=\"animated bounce red\">Phone number requires numbers only</p>"; 
+      $error = true;
+	  
+	 
+} else {
+	
+$error = false;	
+}
+}
+ if (empty($_POST["email"])) {
+	$email = "";
+$emailErr = "<p class=\"animated bounce red\">Email is Required</p>";
+$error = true;
+
+ 
+} else {
+
+
+$email = test_input($_POST["email"]);	
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $emailErr = "<p class=\"animated bounce red\">Invalid email format</p>"; 
+      $error = true;
+ 
+}else {
+	
+$error = false;	
+}
+} 
+if (empty($_POST["facebook"])) {
+	$facebook = "";
+$faceBookErr = "<p class=\"animated bounce red\">Facebook is Required</p>";
+$error = true;
+ 
+} else {
+
+
+$facebook = test_input($_POST["facebook"]);	
+if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$facebook)) {
+      $faceBookErr = "<p class=\"animated bounce red\">Facebook requires a vaild URL</p>"; 
+      $error = true;
+	 
+}else {
+	
+$error = false;	
+}
+} 
+
+ } 
+  if (!$error) {
+ 
+
+ include("connect.php");
+ 
+$queryadd = "INSERT INTO Contacts (`firstname` ,`lastname`,`phone`,`email`,`facebook`)
+VALUES ('$firstname', '$lastname','$phone','$email','$facebook')";
+
+$updatedb = mysqli_query($con,$queryadd);
+
+  mysqli_close($con);
+
+ if ($updatedb) {
+	 $message = "";
+ $message = "<br><p class=\"animated bounce green\">You have been successfully added to the contact list.</p>" ;
+
+ }else{
+	 $message = "";
+   $message = "<br><p class=\"animated bounce red\"> Your information could not be added to the contact list.</p>";
+
+} 
+ 
+
+ }  
+ function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+ 
+ }  
+
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,10 +148,10 @@ header('Location:../index.php');
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="../images/icon.ico">
+ 
+	 
 
-<
-
-    <title>Login Portal</title>
+    <title>Add New Contact</title>
     <!-- Bootstrap -->
   <link href="../css/bootstrap.css" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
@@ -38,7 +164,6 @@ header('Location:../index.php');
   </head>
   <body onLoad="" >
   <br><br>
-  
    <!--Testing Fix Nav with navbar-fixed-top-->
   <nav class="navbar navbar-inverse navbar-fixed-top">
      <!--Testing Fix Nav with navbar-fixed-top-->
@@ -62,10 +187,7 @@ header('Location:../index.php');
         <ul class="nav navbar-nav">
        <!--   <li class="active"><a href="#">Link<span class="sr-only">(current)</span></a></li>-->
            <li ><a href="../index.php">Home</a></li>
-  
-          <!-- <li><a href="pages/design.html">Design</a></li>-->
-  
-    
+     
                              
         </ul>
      
@@ -82,65 +204,84 @@ header('Location:../index.php');
 <ul class="nav navbar-nav">
  <br><br>
 
-           <li class="active" ><a href="../index.html">Home</a></li>
-           <li><a href="../pages/about.html">About</a></li>
-             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Design<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="../pages/design.html">Display Homes</a></li>
-            <li class="divider"></li>
-            <li><a href="../pages/appliances.html">Appliances</a></li>                       
-            <li><a href="../pages/indoor.html">Indoors</a></li>
-            <li><a href="../pages/outdoor.html">Outdoors</a></li>
-          </ul>
-        </li>
-          <li><a href="../pages/ourprocess.html">Our Process</a></li>
-           <li><a href="../pages/faq.html">FAQ</a></li>  
-           <li><a href="../pages/testimonials.html">Testimonials</a></li>  
-                <li><a href="clients.php">Clients</a></li>  
-           <li><a href="../pages/contact.html">Contact</a></li>   
+           <li class="active" ><a href="../index.php">Home</a></li>
+            
               </ul>  
 </nav>
 
 </div>
 
   <div class="container">
-    
+  
     <div class="row">
         
         <div class="col-sm-7 col-sm-offset-1 col-lg-offset-1 col-lg-10">
-       <hr>
-       <h3 >Login Portal</h3>  <br>
+         <hr>
+       <h3 >Add Contact</h3>  <br>
 
-         <div class="row">
-           <div class="col-md-4 col-lg-offset-4 col-lg-4">
-             <div class="thumbnail">
-<div class="caption">
-                <h3>Contact List</h2>
-                <p>This section is to add or remove contacts and up date information.<br>
-                </p>
-                <button type="button" class="btn btn-default center-block" onClick="window.location.href='customers.php'">Enter</button>
-</div>
-             </div>
-           </div>
-           
-           <div class="row">
-          
-            
-                   
-           </div>
-         
-         
-         
-               
-         <br>
-         <button type="button" class="btn btn-lg btn-default center-block" onClick="window.location.href='employee.php?logout=1'" value="Log Out">Logout</button>
-         <br>
-         </div>
-</div>
-
+    <form class="loginform"   method="post">
+  <fieldset class="account-info" >
   
-        
-        </div>
+    <label>
+      First Name
+      <input  type="text"  name="firstname" placeholder="First Name" value="<?php if (isset($_POST['firstname'])) echo htmlentities($_POST['firstname']); ?>"> 
+    </label> 
+ 
+<label>
+   Last Name:
+<input type="text" name="lastname" id="lastname" placeholder="last Name" value="<?php if (isset($_POST['lastname'])) echo htmlentities($_POST['lastname']); ?>" />
+ </label>
+ 
+<label>
+ Phone:
+<input type="text" name="phone" id="phone" placeholder="Phone Number" value="<?php if (isset($_POST['phone'])) echo htmlentities($_POST['phone']); ?>" />
+ </label>
+
+<label>
+ Email: 
+<input type="text" name="email" id="email" placeholder="Email Address" value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>" />
+ </label>
+
+<label>
+ Facebook: 
+<input type="text" name="facebook" id="facebook" placeholder="Facebook" value="<?php if (isset($_POST['facebook'])) echo htmlentities($_POST['facebook']); ?>" />
+ </label>
+ </fieldset>
+  
+    <fieldset class="account-action" >
+    <input type="submit" value="Submit" name="submit" class="btn left">
+  
+  <input type="button" value="Go Back"  onClick="window.location.href='contacts.php'" class="btn right">
+     
+  </fieldset>  
+
+ 
+
+ <!--<button type="submit"  name="submit" class="btn btn-sm btn-default" >Submit</button>
+ <button type="button"  name="submit" onClick="window.location.href='employees.php'" class="btn btn-sm btn-default" >Go Back</button>-->
+<!--<input type="submit" value="Submit" /> 
+<input name="Button2" type="button"   onClick="window.location.href='employees.php'" value="Go Back"/>
+--> 
+<!--<input type="button" value="Login" onClick="window.location.href='orderlist.php'"/> 
+-->
+ 
+
+ 
+
+</form>
+<?php
+ 
+ // shows errors
+  
+	 echo $message;
+ echo $firstNameErr .  $lastNameErr . $phoneErr . $emailErr . $faceBookErr;
+ 
+?>
+    
+    
+    
+</div>
+     </div>
         
  
         

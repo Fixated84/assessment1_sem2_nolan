@@ -1,38 +1,18 @@
 <?php
-$message = "<p></p>";
-
-if($_POST) {
-
-$username = test_input($_POST['username']);
-$password = md5($_POST['password']);
-
-
-include("php/connect.php");
-
-$query =  "SELECT * FROM `admin` WHERE `Username` = '$username' AND `Password` = '$password'";
-
-$result = mysqli_query($con, $query);
-if (mysqli_num_rows($result)==1) {
- //  echo "<br> username: " . $username . " is in the database";
-	session_start();
-	$_SESSION['username']= 'true';
-header('location:php/portal.php');
-
-}else {
- $message = "<br><p class=\"animated bounce red\">Incorrect Username or Password</p>";
-
+ session_start();
+if (!isset($_SESSION['username'])) {
+ header('location:./index.php');
 }
- 
-   }
-   
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
+
+ if(isset($_GET['logout'])) {
+ session_unset(); 
+
+// destroy the session 
+session_destroy(); 
+header('Location:../index.php');
 }
- 
- ?>
+?>
+
 
 
 <!DOCTYPE html>
@@ -43,20 +23,24 @@ function test_input($data) {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="../images/icon.ico">
 
- 
-	<script src="../js/jquery-1.11.2.min.js"></script>
-    
- 
+<
 
-    <title>ICTDBS504: Integrate database with website</title>
-    
- <link href="css/bootstrap.css" rel="stylesheet">	
-  <link href="css/style.css" rel="stylesheet">
-  
+    <title>Login Portal</title>
+    <!-- Bootstrap -->
+  <link href="../css/bootstrap.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
   </head>
-  <body>
+  <body onLoad="" >
   <br><br>
-   <nav class="navbar navbar-inverse navbar-fixed-top">
+  
+   <!--Testing Fix Nav with navbar-fixed-top-->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
      <!--Testing Fix Nav with navbar-fixed-top-->
      
     <div class="container-fluid">
@@ -77,11 +61,11 @@ function test_input($data) {
       <div class="collapse navbar-collapse" id="inverseNavbar1">
         <ul class="nav navbar-nav">
        <!--   <li class="active"><a href="#">Link<span class="sr-only">(current)</span></a></li>-->
-           <li ><a href="index.php">Home</a></li>
-           
+           <li ><a href="../index.php">Home</a></li>
+  
           <!-- <li><a href="pages/design.html">Design</a></li>-->
   
-   
+    
                              
         </ul>
      
@@ -91,46 +75,57 @@ function test_input($data) {
     </div>
     <!-- /.container-fluid -->
   </nav>
-  
+
+<div class="navbarside navbar-inverse">
+
+<nav >
+<ul class="nav navbar-nav">
+ <br><br>
+
+           <li class="active" ><a href="../index.php">Home</a></li>
+
+              </ul>  
+</nav>
+
+</div>
+
   <div class="container">
-   
+    
     <div class="row">
         
         <div class="col-sm-7 col-sm-offset-1 col-lg-offset-1 col-lg-10">
-         <hr>
-       <h3 >ICTDBS504: Integrate database with website</h3>  <br>
+       <hr>
+       <h3 >Login Portal</h3>  <br>
 
-     
- 
-
- 
-<br>
-<form class="loginform" method="POST">
-  <fieldset class="account-info">
-    <label>
-      Username
-      <input type="text" name="username">
-    </label>
-    <label>
-      Password
-      <input type="password" name="password">
-    </label>
-  </fieldset>
-  <fieldset class="account-action formcentre">
-    <input class="btn" type="submit" name="submit" value="Login">
-     
-  </fieldset>
-  
-</form>
- 
-  	
-      <?php
-echo $message;
- ?>   
- <br>
-  
+         <div class="row">
+           <div class="col-md-4 col-lg-offset-4 col-lg-4">
+             <div class="thumbnail">
+<div class="caption">
+                <h3>Contact List</h2>
+                <p>This section is to add or remove contacts and up date information.<br>
+                </p>
+                <button type="button" class="btn btn-default center-block" onClick="window.location.href='contacts.php'">Enter</button>
 </div>
-      
+             </div>
+           </div>
+           
+           <div class="row">
+          
+            
+                   
+           </div>
+         
+         
+         
+               
+         <br>
+         <button type="button" class="btn btn-lg btn-default center-block" onClick="window.location.href='portal.php?logout=1'" value="Log Out">Logout</button>
+         <br>
+         </div>
+</div>
+
+  
+        
         </div>
         
  
@@ -141,7 +136,7 @@ echo $message;
         <div class="row center-block">
     <div class="text-center col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-0 hello">
       
-      <p>Copyright &copy; 2016 &middot; All Rights Reserved</p>
+      <p>Copyright &copy; 2015 &middot; All Rights Reserved </p>
     </div>
       
   </div>
@@ -218,11 +213,8 @@ $(document).ready(function() {
 	});   
 });
 </script>
-  
-
- 
- 
 
 
-</body>
+
+  </body>
 </html>
