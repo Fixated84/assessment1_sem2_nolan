@@ -223,7 +223,7 @@ echo "<td>".$row['lastname']."</td>";
  echo "<td><a href=mailto:".$row['email'].">".$row['email']."</td>";
  
   
-  echo "<td><a href=http://'".$row['facebook']."' target=_blank'>".$row['facebook']."</a></td>";
+  echo "<td><a href=http://".$row['facebook']." target=_blank'>".$row['facebook']."</a></td>";
  
  
  
